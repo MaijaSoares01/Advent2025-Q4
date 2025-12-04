@@ -42,8 +42,14 @@ public class Main {
             // Count all accessible rolls
             System.out.println("All accessible rolls count: " + countAccessibleRolls(rollsearch, roll));
 
-            // Count all accessible rolls
-            System.out.println("All accessible rolls count: " + countAccessibleRolls(rollsearch, roll));
+            // Count all accessible rolls removed
+            int newNum = 0;
+            int totalRemoved = 0;
+            do{
+                newNum = countAccessibleRollsRemoved(rollsearch, roll);
+                totalRemoved += newNum;
+            }while (newNum != 0);
+            System.out.println("Number of accessible rolls removed: " + totalRemoved);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,7 +89,7 @@ public class Main {
     public static int countAccessibleRollsRemoved(char[][] grid, char roll) {
         int rows = grid.length;
         int cols = grid[0].length;
-        int accessibleCount = 0;
+        int removed = 0;
         int[] dr = {-1, -1, -1, 0, 0, 1, 1, 1};
         int[] dc = {-1, 0, 1, -1, 1, -1, 0, 1};
 
@@ -103,11 +109,12 @@ public class Main {
                     }
                 }
                 if (neighbors < 4) {
-                    accessibleCount++;
+                    removed++;
+                    grid[r][c] = '.';
                 }
             }
         }
-        return accessibleCount;
+        return removed;
     }
 
     public static boolean accessible(int row, int col, char roll, int direction) {
